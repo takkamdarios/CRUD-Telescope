@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+    app:
+        image: webdevops/php-nginx:7.4
+        container_name: laravel_app
+        restart: unless-stopped
+        volumes:
+            - ./:/app
+        environment:
+            - APP_ENV=local
+            - APP_DEBUG=true
+            - APP_KEY=base64:mPVj9GMmarPz7vrruJun4jwyLu6SSrvpuqH/IaA/QRM=
+            - APP_URL=http://localhost
+            - DB_CONNECTION=mysql
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_DATABASE=laravelll
+            - DB_USERNAME=root
+            - DB_PASSWORD=root
+        depends_on:
+            - db
+        ports:
+            - "8000:80"
+
+    db:
+        image: mysql:5.7
+        container_name: laravel_db
+        restart: unless-stopped
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: laravelll
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+
+volumes:
+    db_data:
